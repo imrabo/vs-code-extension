@@ -1,0 +1,188 @@
+{
+  "name": "imrabo-ai-orchestration",
+  "displayName": "Imrabo AI Orchestration",
+  "description": "Advanced AI router and benchmark extension for local and remote LLMs",
+  "version": "1.0.0",
+  "publisher": "your-username",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onCommand:imrabo.runLocalModel",
+    "onCommand:imrabo.runRemoteModel",
+    "onCommand:imrabo.generateCode",
+    "onCommand:imrabo.analyzeText",
+    "onCommand:imrabo.configureModels",
+    "onCommand:imrabo.benchmarkPrompt",
+    "onView:imrabo.panel"
+  ],
+  "categories": [
+    "AI",
+    "Programming Languages",
+    "Utilities"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "imrabo.runLocalModel",
+        "title": "Run Local AI Model (Ollama/LM Studio)"
+      },
+      {
+        "command": "imrabo.runRemoteModel",
+        "title": "Run Remote AI Model (OpenAI/Anthropic)"
+      },
+      {
+        "command": "imrabo.generateCode",
+        "title": "Generate Code with AI"
+      },
+      {
+        "command": "imrabo.analyzeText",
+        "title": "Analyze Text with AI"
+      },
+      {
+        "command": "imrabo.configureModels",
+        "title": "Configure AI Models"
+      },
+      {
+        "command": "imrabo.benchmarkPrompt",
+        "title": "Benchmark Local vs Remote Models"
+      },
+      {
+        "command": "imrabo.openChat",
+        "title": "Open Imrabo Chat"
+      },
+      {
+        "command": "imrabo.loopTask",
+        "title": "Run Looping AI Task"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Imrabo Configuration",
+      "properties": {
+        "imrabo.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable Imrabo orchestration"
+        },
+        "imrabo.localModelUrl": {
+          "type": "string",
+          "default": "",
+          "description": "Local model URL (for example, http://localhost:11434)"
+        },
+        "imrabo.remoteApiKey": {
+          "type": "string",
+          "default": "",
+          "description": "API key for remote models"
+        },
+        "imrabo.localModelName": {
+          "type": "string",
+          "default": "llama3",
+          "description": "Local model name or identifier"
+        },
+        "imrabo.localMaxTokens": {
+          "type": "number",
+          "default": 1024,
+          "description": "Max tokens for local model responses"
+        },
+        "imrabo.localTemperature": {
+          "type": "number",
+          "default": 0.5,
+          "description": "Local model temperature"
+        },
+        "imrabo.remoteModelName": {
+          "type": "string",
+          "default": "gpt-4o",
+          "description": "Remote model name or identifier"
+        },
+        "imrabo.remoteMaxTokens": {
+          "type": "number",
+          "default": 2048,
+          "description": "Max tokens for remote model responses"
+        },
+        "imrabo.remoteTemperature": {
+          "type": "number",
+          "default": 0.7,
+          "description": "Remote model temperature"
+        },
+        "imrabo.loopTaskCount": {
+          "type": "number",
+          "default": 3,
+          "description": "Default repeat count for looping tasks"
+        },
+        "imrabo.maxTokens": {
+          "type": "number",
+          "default": 2048,
+          "description": "Maximum tokens for generic responses"
+        },
+        "imrabo.temperature": {
+          "type": "number",
+          "default": 0.7,
+          "description": "Creativity temperature (0-1)"
+        }
+      }
+    },
+    "viewsContainers": {
+      "panel": [
+        {
+          "id": "imrabo",
+          "title": "Imrabo",
+          "icon": "media/imrabo.svg"
+        }
+      ]
+    },
+    "views": {
+      "imrabo": [
+        {
+          "id": "imrabo.panel",
+          "name": "Model Benchmarks",
+          "type": "webview"
+        }
+      ]
+    },
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "imrabo.runLocalModel",
+          "when": "editorTextFocus"
+        },
+        {
+          "command": "imrabo.runRemoteModel",
+          "when": "editorTextFocus"
+        },
+        {
+          "command": "imrabo.generateCode",
+          "when": "editorTextFocus"
+        },
+        {
+          "command": "imrabo.analyzeText",
+          "when": "editorTextFocus"
+        },
+        {
+          "command": "imrabo.configureModels"
+        },
+        {
+          "command": "imrabo.benchmarkPrompt"
+        },
+        {
+          "command": "imrabo.openChat"
+        },
+        {
+          "command": "imrabo.loopTask"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build",
+    "build": "tsc -p .",
+    "watch": "tsc -w"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@types/vscode": "^1.74.0",
+    "@vscode/vsce": "^3.9.1",
+    "typescript": "^5.0.0"
+  }
+}
