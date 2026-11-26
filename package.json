@@ -55,6 +55,22 @@
       {
         "command": "imrabo.loopTask",
         "title": "Run Looping AI Task"
+      },
+      {
+        "command": "imrabo.explainCode",
+        "title": "Explain Selected Code"
+      },
+      {
+        "command": "imrabo.fixCode",
+        "title": "Fix Selected Code"
+      },
+      {
+        "command": "imrabo.createTests",
+        "title": "Create Unit Tests"
+      },
+      {
+        "command": "imrabo.summarizeFile",
+        "title": "Summarize Current File"
       }
     ],
     "configuration": {
@@ -76,6 +92,16 @@
           "default": "",
           "description": "API key for remote models"
         },
+        "imrabo.mode": {
+          "type": "string",
+          "enum": [
+            "local",
+            "remote",
+            "hybrid"
+          ],
+          "default": "hybrid",
+          "description": "Select the model execution mode"
+        },
         "imrabo.localModelName": {
           "type": "string",
           "default": "llama3",
@@ -90,6 +116,16 @@
           "type": "number",
           "default": 0.5,
           "description": "Local model temperature"
+        },
+        "imrabo.remoteProvider": {
+          "type": "string",
+          "enum": [
+            "openai",
+            "anthropic",
+            "custom"
+          ],
+          "default": "openai",
+          "description": "Remote model provider to use"
         },
         "imrabo.remoteModelName": {
           "type": "string",
@@ -110,6 +146,34 @@
           "type": "number",
           "default": 3,
           "description": "Default repeat count for looping tasks"
+        },
+        "imrabo.contextLength": {
+          "type": "number",
+          "default": 2048,
+          "description": "Maximum context length for prompt input"
+        },
+        "imrabo.enableMarketplace": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable the Imrabo skills marketplace"
+        },
+        "imrabo.marketplaceUrl": {
+          "type": "string",
+          "default": "https://example.com/imrabo-marketplace",
+          "description": "Marketplace URL for skills and MCP offerings"
+        },
+        "imrabo.marketplaceRefreshInterval": {
+          "type": "number",
+          "default": 60,
+          "description": "Marketplace refresh interval in minutes"
+        },
+        "imrabo.installedSkills": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "List of installed marketplace skill IDs"
         },
         "imrabo.maxTokens": {
           "type": "number",
@@ -169,20 +233,74 @@
           "command": "imrabo.openChat"
         },
         {
+          "command": "imrabo.openMarketplace"
+        },
+        {
           "command": "imrabo.loopTask"
+        },
+        {
+          "command": "imrabo.explainCode"
+        },
+        {
+          "command": "imrabo.fixCode"
+        },
+        {
+          "command": "imrabo.createTests"
+        },
+        {
+          "command": "imrabo.summarizeFile"
         }
       ]
-    }
+    },
+    "keybindings": [
+      {
+        "command": "imrabo.generateCode",
+        "key": "ctrl+alt+g",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "imrabo.analyzeText",
+        "key": "ctrl+alt+a",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "imrabo.explainCode",
+        "key": "ctrl+alt+e",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "imrabo.fixCode",
+        "key": "ctrl+alt+f",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "imrabo.createTests",
+        "key": "ctrl+alt+t",
+        "when": "editorTextFocus"
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run build",
     "build": "tsc -p .",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+    "lint": "eslint src --ext ts",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\"",
+    "test": "mocha -r ts-node/register --timeout 10000 src/test/**/*.test.ts"
   },
   "devDependencies": {
+    "@types/mocha": "^10.0.6",
     "@types/node": "^18.0.0",
     "@types/vscode": "^1.74.0",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
     "@vscode/vsce": "^3.9.1",
-    "typescript": "^5.0.0"
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "mocha": "^10.2.0",
+    "prettier": "^3.2.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   }
 }
